@@ -1,0 +1,401 @@
+1. write script to server Start, use --watch instead of nodemon
+
+    "scripts": {
+        "dev" : "node --watch server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+2. Initialize PORT in .env file( keeps secret info ):
+
+        const PORT = process.env.PORT || 7000 ;
+        app.listen(PORT, ()=>{
+            console.log(`Airbnb Server Running on: ${PORT}`)
+        })
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3.   IMPORT MODULES
+1. const express = require('express');
+    if we using this syntax, then we mention the type in package.json file
+
+        {
+            "name": "chapter-3-nodejs-sqlite",
+            "version": "1.0.0",
+            "main": "index.js",
+            "type" : "module",
+
+        }
+
+2. import express from 'express'
+
+        {
+            "name": "chapter-3-nodejs-sqlite",
+            "version": "1.0.0",
+            "main": "index.js",
+            "type" : "commonjs",   // which is set bydefault.
+
+        }
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4. Render/Serve the index.html(STATIC) file:
+
+    app.get('/', (req, res) => {
+        res.sendFile(path.join(__dirname, 'public', 'index.html'))
+    })
+
+
+    // 1. GET the file path from the url of the current module
+    const __filename = fileURLToPath(import.meta.url); 
+
+
+    // 2. get the directory name from the file path.
+    const __dirname = dirname(__filename);
+
+
+
+    app.use(express.static(path.join(__dirname, './public')))
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+5. render ejs file only one first 
+
+5.1 : 
+        app.set('view engine', 'ejs');
+        app.set('views', 'views');
+
+5.2: 
+    app.get('/', (req, res) => {
+        res.render('home-index')
+})
+
+** using .EJS file -> RES.RENDER()
+** using .HTML file -> RES.SENDFILE()
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+6. express Router();
+
+6.1 : Route userRouter (user see displalying House, home listing):
+
+                            (MODERN FRAMEWORK)
+
+6.1.1 : In userRouter.js
+
+        import express from 'express';
+
+        const router = express.Router();  // route or endpoint what user see.
+
+        router.get('/', (req, res) => {
+            res.render('home-index')
+        });
+
+
+        export default router;
+
+6.1.2 : In Server.js
+
+        import userRouter from './routes/userRouter.js'
+
+        app.use(userRouter)
+                            
+                            
+                            (OLD version FRAMEWORK)
+
+6.1.1 : In userRouter.js
+
+        const express = require('express');
+
+        const router = express.Router();  // route or endpoint what user see.
+
+        router.get('/', (req, res) => {
+            res.render('home-index')
+        });
+
+
+        module.exports = router;
+
+6.1.2 : In Server.js
+
+        const userRouter = require('./routes/userRouter.js')
+
+        app.use(userRouter)
+
+
+6.2 - Route multiple request handler in one route file(get,post):
+
+6.2.1 : In hostRouter.js
+
+       import express from 'express'
+
+        const router = express.Router();
+
+        router.get('/add-home', (req, res) => {
+            // res.sendFile(path.join(__dirname, 'public', 'index.html'))
+            res.render('addHomes')
+        })
+
+        router.post('/post-home',  (req, res) => {
+            // res.sendFile(path.join(__dirname, 'public', 'index.html'))
+            res.render('post-home')
+        })
+
+
+        export default router;
+
+6.2.2 : In Server.js
+
+        const userRouter = require('./routes/hostRouter.js')
+
+        app.use(hostRouter);
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+7.   Taking User Input and render it:
+
+7.1:  logs user input:
+
+        in post request Handler, console.log(req.log);
+
+7.2:  Then push req.body into varible and import it and pass while render.
+
+        router.get('/', (req, res) => {
+            res.render('home-index', {registeredHomes: registeredHomes, DEFAULT_HOMES: DEFAULT_HOMES})
+        });
+
+        AND then USE IT BY APPLYING FOREACH.
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+8: MVC (Architecture Pattern)
+
+1: Controller
+                    *****   MODERN SYNTAX ****
+
+1.1 Create controller/homeReqHandler.js:      (under this file all home request handler EXIST, displayhome, addhome, posthome)
+
+    export const getAddHome = (req, res) => {
+        // res.sendFile(path.join(__dirname, 'public', 'index.html'))
+        res.render('addHomes')
+    }
+
+
+1.2: /hostRouter.js      (ADD HOMES VIA FORM)
+
+    import {getAddHome} from '../controllers/homeReqHandler.js'
+
+    router.get('/add-home', getAddHome)
+
+1.3 /controller/homeReqHandler.js:      (under this file all home request handler EXIST, displayhome, addhome, posthome)
+
+  export const postHome = (req, res) => {
+    registeredHomes.push(req.body);
+    console.log(registeredHomes);
+    res.render('post-home')
+}
+
+
+1.4: /hostRouter.js      (ADD HOMES VIA FORM)
+
+    import {getAddHome, postHome} from '../controllers/homeReqHandler.js'
+
+    router.get('/add-home', postHome)
+
+
+                         ****  OLDER SYNTAX ******
+
+
+1.1 Create controller/homeReqHandler.js:      (under this file all home request handler EXIST, displayhome, addhome, posthome)
+
+    exports.getAddHome = (req,res, next) => {
+    // res.sendFile(path.join(rootDir, 'views', 'add-home.html'));
+    res.render('host/add-home', {pageTitle: "Add Home to Airbnb"})
+}
+
+
+1.2: /hostRouter.js      (ADD HOMES VIA FORM)
+
+    const homeController = require("../controllers/homes")
+
+    hostRouter.get('/host/add-home', homeController.getAddHome);
+
+1.3 /controller/homeReqHandler.js:      (under this file all home request handler EXIST, displayhome, addhome, posthome)
+
+ exports.postAddHome = (req,res, next) => {
+    console.log(req.body);
+    const {houseName,price,location,rating,photourl} = req.body;
+    const home = new Home(houseName,price,location,rating,photourl)
+    home.save();
+
+
+    res.render('host/home-registered', {pageTitle: "Home Added Successfully"});
+}
+
+
+1.4: /hostRouter.js      (ADD HOMES VIA FORM)
+
+    const homeController = require("../controllers/homes")
+
+    hostRouter.post('/host/add-home', homeController.postAddHome)
+
+***********************************************************************************************************************************************************************************************************************************************
+*****************************************   THIS IS MAIN CODE OF PROJECT TILL NOW (Add Home, post home, renderHOmeLIST)     *******************************************************************************************************
+***********************************************************************************************************************************************************************************************************************************************
+
+2. /controller.homeReqHandlerController.js:
+
+        import HomeModel from "../models/homeDatalogic.js";
+
+        export const getAddHome = (req, res) => {
+            // res.sendFile(path.join(__dirname, 'public', 'index.html'))
+            res.render('addHomes')
+        }
+
+
+        // This is a part of model(handle data Logic):
+        export const registeredHomes = [];
+
+        export const postHome = (req, res) => {
+            // res.sendFile(path.join(__dirname, 'public', 'index.html'))
+            // console.log(req.body)
+            registeredHomes.push(req.body);
+
+            const {location, price, night, rating, imgUrl} = req.body;
+            const homeObj = new HomeModel(location, price, night, rating, imgUrl);
+            homeObj.save();
+            res.render('post-home')
+            
+        }
+
+
+        // This is a part of model(handle data Logic):
+        const DEFAULT_HOMES = [
+            {
+                imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaSkURYm6_8oK1ThYddWYhPJTarRNzsDECCg&s',
+                location: 'Flat in Benaulin',
+                price: '4,800',
+                nights: '2',
+                rating: '4.91'
+        },
+            {
+            imgUrl: 'https://a0.muscache.com/im/pictures/e581ead5-8497-48f9-9b01-697efd704801.jpg?im_w=1920',
+            location: 'Guest House in Majorda',
+            price: '2568',
+            nights: '2',
+            rating: '4.5'
+        },
+        {
+            imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUIwNDGXUTbfZTlum0sBo-9rJo6q43OM1B4Q&s',
+            location: 'Flats in Varca',
+            price: '7075',
+            nights: '2',
+            rating: '4.88'
+        },
+            {
+                imgUrl: 'https://a0.muscache.com/im/pictures/d6ce61b5-87e5-4f45-b54d-42f2f7ef9a55.jpg',
+            location: 'Tiny Home in Mysore',
+            price: '3555',
+            nights: '2',
+            rating: '4.94'
+        },
+            {
+            imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9onGDiZWhq5azM7yz68ViNsVY-SKF4EzW7Q&s',
+            location: 'Apartment in Anjuna',
+            price: '3389',
+            nights: '2',
+            rating: '4.85'
+        },
+        {
+            imgUrl: 'https://static2.tripoto.com/media/filter/tst/img/268998/TripDocument/1510300107_summertime_villa.jpg',
+            location: 'Cottage in Kodagu',
+            price: '7988',
+            nights: '2',
+            rating: '4.2'
+        },
+        {
+            imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqjUTqb0TOTChtOCQdsrrfiHaz7Lfp90oY5w&s',
+            location: 'Farm stay in Medikeri',
+            price: '7210',
+            nights: '2',
+            rating: '4.5'
+        },
+        {
+            imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6E--DrvJHsEg90h50O9SEax9L9oQGY_I7nA&s',
+            location: 'Home in Los Angels',
+            price: '13,895',
+            nights: '2',
+            rating: '4.98'
+        },
+        {
+            imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROxnR7vfeMc6pQ4PUDZb0N7uyfAZTN5ef6yA&s',
+            location: 'Nature lodge in Chelvara',
+            price: '14607',
+            nights: '2',
+            rating: '4.25'
+        },
+        {
+            imgUrl: 'https://cdn.prod.website-files.com/62543b24f185dbadbab457e8/675b827860a43103d7638e15_62a733e1fa0ea16f522f6606_why_some_properties_work_header%20(1).webp',
+            location: 'Home in Ooty',
+            price: '27,731',
+            nights: '2',
+            rating: '4.25'
+        }
+        ]
+
+
+        export const getHome = (req, res) => {
+        HomeModel.fetchAll((registeredHomes) => {
+            res.render('home-index', {registeredHomes: registeredHomes, DEFAULT_HOMES: DEFAULT_HOMES})
+
+        })
+
+        }
+
+3. /model/homeDatalogic.js:
+
+        import fs from  'fs';
+        import path, { dirname } from 'path';
+        import { registeredHomes } from '../controllers/homeReqHandlerController.js';
+        import { fileURLToPath } from 'url';
+
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = dirname(__filename);
+
+        export default class HomeModel {
+            constructor(location, price, night, rating, imgUrl) {
+                this.location = location;
+                this.price = price;
+                this.rating = rating;
+                this.night = night;
+                this.imgUrl = imgUrl;
+
+            }
+
+            save(){
+                HomeModel.fetchAll(registeredHomes => {
+                    registeredHomes.push(this);
+                    const dbfilePath = path.join(__dirname,'data', 'homes.json');
+                    fs.writeFile(dbfilePath, JSON.stringify(registeredHomes), (err) => {
+                        if (err) {
+                            console.log("Error While Writing File(SAVE): ", err);
+                        }
+                    })
+                })
+            }
+            
+            static fetchAll(callback) {
+                const dbfilePath = path.join(__dirname,'data', 'homes.json');
+                fs.readFile(dbfilePath, (err,data) => {
+                    callback(!err ? JSON.parse(data) : []);
+                })
+
+            }
+        }
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------

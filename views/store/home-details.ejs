@@ -1,0 +1,153 @@
+<%- include('../partials/html-head') %>
+
+<body>
+    <%- include('../partials/header') %>
+
+    <main class="main-container">
+        <div class="home-details-container">
+            <div class="home-details-header">
+                <h1 class="home-details-title"><%= home.location%></h1>
+                <div class="home-details-header-actions">
+                    <button class="home-details-action-btn">
+                        <span>📤</span> Share
+                    </button>
+                    <button class="home-details-action-btn">
+                        <span>🤍</span> Save
+                    </button>
+                </div>
+            </div>
+            
+            <div class="home-details-photo-container">
+                <div class="home-details-main-photo">
+                    <img class="home-details-main-photo-url" src=<%= home.imgUrl%> alt="" srcset="">
+                    
+                </div>
+                <div class="home-details-right-container">
+                    <div class="right-top">
+                        <div class="home-detailsphotos">
+                            <img class="home-details-photo-url " src=<%= home.imgUrl%> alt="" srcset="">
+                        
+                        </div>
+                        <div class="home-detailsphotos">
+                            <img class="home-details-photo-url photo-border-top-right" src=<%= home.imgUrl%> alt="" srcset="">
+                        
+                        </div>
+                    </div>
+                    <div class="right-bottom">
+                        <div class="home-detailsphotos">
+                            <img class="home-details-photo-url" src=<%= home.imgUrl%> alt="" srcset="">
+                        
+                        </div>
+                         <div class="home-detailsphotos">
+                            <img class="home-details-photo-url photo-border-bottom-right" src=<%= home.imgUrl%> alt="" srcset="">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="home-details-content-grid">
+                <div class="home-details-main-content">
+                    <h2>Farm stay in Dhura, India</h2>
+                    <p class="home-details-property-details">2 guests · 1 bed · 1 bathroom</p>
+
+                    <div class="home-details-rating-section">
+                        <div class="home-details-rating-item">
+                            <span class="home-details-crown-icon">👑</span>
+                            <div>
+                                <div class="home-details-rating-text">Guest favourite</div>
+                                <div class="home-details-rating-subtext">One of the most loved homes on Airbnb, according to guests</div>
+                            </div>
+                        </div>
+                        
+                        <div class="home-details-rating-item">
+                            <div class="home-details-stars">★★★★★</div>
+                            <span class="home-details-rating-score">5.0</span>
+                        </div>
+                        
+                        <div class="home-details-home-details-rating-item">
+                            <span class="home-details-reviews-count">16 Reviews</span>
+                        </div>
+                    </div>
+
+                    <div class="home-details-host-section">
+                        <div class="home-details-host-avatar">M</div>
+                        <div class="home-details-host-info">
+                            <h3>Hosted by Mriganka</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="home-details-booking-card">
+                    <div class="home-details-price-tag">Prices include all fees</div>
+                    
+                    <div class="home-details-price-section">
+                        <div class="home-details-price">
+                            <span class="home-details-original-price">₹26,574</span>
+                            ₹ <%= home.price%> <span style="font-size: 16px; font-weight: normal;">for <%= home.nights%> nights</span>
+                        </div>
+                    </div>
+
+                    <div class="home-details-booking-form">
+                        <div class="home-details-date-row">
+                            <div class="home-details-date-input">
+                                <span class="home-details-date-label">Check-in</span>
+                                <div class="home-details-date-value">6/17/2025</div>
+                            </div>
+                            <div class="home-details-date-input">
+                                <span class="home-details-date-label">Checkout</span>
+                                <div class="home-details-date-value">6/22/2025</div>
+                            </div>
+                        </div>
+                        <div class="home-details-guests-input">
+                            <span class="home-details-date-label">Guests</span>
+                            <div class="home-details-date-value">1 guest</div>
+                        </div>
+                    </div>
+
+                    <form action="/favorite" method="post">
+                        <button type="submit" class="home-details-reserve-btn">Add to favourite</button>
+                        <input type="hidden" name="id" value="<%= home.id%>">
+
+                    </form>
+                    <button class="home-details-reserve-btn">Reserve</button>
+                    
+                    <p class="home-details-no-charge">You won't be charged yet</p>
+
+                    <div class="home-details-price-breakdown">
+                        <div class="home-details-price-row">
+                            <span>₹4,359 × 5 nights</span>
+                            <span>₹21,796</span>
+                        </div>
+                        <div class="home-details-price-row">
+                            <span>Cleaning fee</span>
+                            <span>₹0</span>
+                        </div>
+                        <div class="home-details-price-row">
+                            <span>Service fee</span>
+                            <span>₹0</span>
+                        </div>
+                        <div class="home-details-total-row">
+                            <span>Total</span>
+                            <span>₹21,796</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                
+    </main>
+    
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
