@@ -5,50 +5,6 @@ export const router = express.Router();
 
 router.get('/add-home', getAddHome)
 
-const DEFAULT_HOMES = [
-    {
-    imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaSkURYm6_8oK1ThYddWYhPJTarRNzsDECCg&s',
-    location: 'Flats in Los',
-    price: '1200000',
-    nights: '2',
-    rating: '4.5'
-  },
-    {
-    imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaSkURYm6_8oK1ThYddWYhPJTarRNzsDECCg&s',
-    location: 'Flats in Los',
-    price: '1200000',
-    nights: '2',
-    rating: '4.5'
-  },
-    {
-    imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaSkURYm6_8oK1ThYddWYhPJTarRNzsDECCg&s',
-    location: 'Flats in Los',
-    price: '1200000',
-    nights: '2',
-    rating: '4.5'
-  },
-    {
-    imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaSkURYm6_8oK1ThYddWYhPJTarRNzsDECCg&s',
-    location: 'Flats in Los',
-    price: '1200000',
-    nights: '2',
-    rating: '4.5'
-  },
-    {
-    imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaSkURYm6_8oK1ThYddWYhPJTarRNzsDECCg&s',
-    location: 'Flats in Los',
-    price: '1200000',
-    nights: '2',
-    rating: '4.5'
-  },
-    {
-    imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaSkURYm6_8oK1ThYddWYhPJTarRNzsDECCg&s',
-    location: 'Flats in Los',
-    price: '1200000',
-    nights: '2',
-    rating: '4.5'
-  }
-]
 
 
 

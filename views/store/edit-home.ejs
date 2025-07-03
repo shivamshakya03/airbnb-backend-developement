@@ -7,12 +7,10 @@
 
                 <ul class="display-house-card">
 
-                    <% if(registeredHomes.length <= 0){
-                        registeredHomes = DEFAULT_HOMES;
-                    } %>
+                    
 
                     <% registeredHomes.forEach((home) => { %>                 
-                        <a href="/home/<%= home.id %>" class="home-details-container" title="click for more details">
+                        <a href="/home/<%= home._id %>" class="home-details-container" title="click for more details">
                             <li class="liiii">
                                 <div class="house-card-container">
                                     <div class="house-card-img-container-987102">
@@ -22,18 +20,18 @@
                                         <span class="house-title"> <%=home.location %></span>
                                         <div>
                                             <span class="house-info">₹ <%= home.price%> </span>
-                                        <span class="house-info" >for <%= home.nights%> nights</span>
+                                        <span class="house-info" >for <%= home.night%> nights</span>
                                         <span class="house-info"><span class="house-card-star-icon">&#9733;</span> <%= home.rating%> </span>
                                         </div>
                                     </div>
 
                                     <div class="edit-delete-btn">
-                                        <form action="/host/deleteHome/<%= home.id%>" method="POST">
+                                        <form action="/host/deleteHome/<%= home._id%>" method="POST">
                                             <button class="edit-delete-btns" title="Delete" type="submit"><i class="material-icons edit-delete-housecard-btn" style="font-size: 23px;">delete</i></button>
                                         </form>
 
 
-                                        <a href="/host/addHomes/<%=home.id%>?editing=true" class="edit-delete-btns" title="Edit"><i class="fa fa-edit edit-delete-housecard-btn" style="font-size: 20px;"></i></a>
+                                        <a href="/host/addHomes/<%=home._id%>?editing=true" class="edit-delete-btns" title="Edit"><i class="fa fa-edit edit-delete-housecard-btn" style="font-size: 20px;"></i></a>
                                     </div>
                                 </div>
                             </li>

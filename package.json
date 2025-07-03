@@ -2,9 +2,9 @@
   "name": "10-airbnb-app",
   "version": "1.0.0",
   "main": "index.js",
-  "type" : "module",
+  "type": "module",
   "scripts": {
-    "dev" : "node --watch server.js",
+    "dev": "node --watch server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,6 +13,9 @@
   "description": "",
   "dependencies": {
     "ejs": "^3.1.10",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "mongodb": "^6.17.0",
+    "mongoose": "^8.16.1"
   }
 }

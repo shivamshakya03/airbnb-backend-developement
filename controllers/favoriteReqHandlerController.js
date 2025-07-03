@@ -2,38 +2,46 @@ import favoriteModel from "../models/favoriteDatalogic.js";
 import HomeModel from "../models/homeDatalogic.js";
 
 
-export const getfavouriteHome = (req, res) => {
-  favoriteModel.getFavourite((favourites) => {
-    HomeModel.fetchAll((homes) => {
-      const favoriteDetails = favourites.map(homeId => homes.find(home => home.id === homeId));
-      res.render('store/favorites.ejs' , {favoriteDetails: favoriteDetails});
-      
-    })
-  })
+export const getfavouriteHome =   (req, res) => {
+  favoriteModel.getFavourite().then(favDocs => {
+    const favIds = favDocs.map(fav => fav.homeId);
+    HomeModel.fetchAll().then(Allhomes => { 
+    const favoritehome = Allhomes.filter(home => favIds.includes(home._id.toString()));
+    
+    res.render('store/favorites', {favoritehome: favoritehome});
 
+    });
+  });
 } 
-                //   OR
-
-// export const getfavouriteHome = (req, res, next) => {
-//     favoriteModel.getFavourite((favoritesHome) => {
-//         HomeModel.fetchAll((AllHomes) => {
-//             const favoriteHomeDetails = favoritesHome.map(favhomeID => {
-//                 AllHomes.find((home) => {
-//                     home.id === favhomeID;
-//                 })
-//             })
-//         })
-//     })
-// }
+ 
 
 export const postAddtofavorite = (req, res) => {
-  favoriteModel.addtoFavourite(req.body.id, err => {
-    if(err) {
-      console.log("Error While Marking Favourite!", err);
-    }
-    res.redirect('/favorite')
-    
+  const homeid = req.params.homeID;
+  console.log(homeid);
+  const fav = new favoriteModel(homeid);
+
+  fav.save().then(result => {
+    console.log(result);
+  }).catch(err => {
+    console.log(err);
+  }).finally (() => {
+    res.redirect('/');
   })
+  
+
+}
+export const removefavHome = (req, res) => {
+ 
+  let homeId = req.params.homeID;
+
+  console.log(homeId);
+  favoriteModel.deleteById(homeId).then(() => {
+    console.log('Home removed from favorites');
+  }).catch(err => {
+    console.log(err);
+  }).finally(() => {  
+    res.redirect('/favorite');
+  });
 
 }
 

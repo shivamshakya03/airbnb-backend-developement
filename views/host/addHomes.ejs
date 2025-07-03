@@ -7,13 +7,13 @@
     <section class="add-home-section">
         <form action="/<%= editing ? 'edit-home' : 'post-home'%>" method="POST" class="add-home-form">
 
-            <input name="id" type="hidden" value="<%= editing ? home.id : ''%>" placeholder="HOme Card id">
+            <input name="_id" type="hidden" value="<%= editing ? home._id : ''%>" placeholder="HOme Card id">
 
 
             <input name="imgUrl" type="text" value="<%= editing ? home.imgUrl : ''%>" placeholder="Enter image URL">
             <input name="location" type="text" placeholder="Location" value="<%= editing ? home.location : ''%>">
             <input name="price" type="text" placeholder="Price" value="<%= editing ? home.price : ''%>">
-            <input name="nights" type="text" placeholder="How many night?" value="<%= editing ? home.nights : ''%>">
+            <input name="night" type="text" placeholder="How many night?" value="<%= editing ? home.night : ''%>">
             <input name="rating" type="text" placeholder="Rating" value="<%= editing ? home.rating : ''%>">
             <button class="form-submit-button" type="submit"><%= (editing)  ? "Update" : "Register"%></button>
 

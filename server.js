@@ -3,6 +3,8 @@ import path, {dirname} from 'path';
 import { fileURLToPath } from 'url';
 import hostRouter from './routes/hostRouter.js'
 import userRouter from './routes/storeRouter.js'
+import favRouter from './routes/favouriteRouter.js'
+import { mongoConnect } from './utils/database.js';
 
 const app = express();
 
@@ -27,6 +29,7 @@ app.use(userRouter);
 
 
 app.use(hostRouter);
+app.use(favRouter);
 
 // app.post()
 
@@ -35,6 +38,8 @@ app.use((req,res) => {
 })
 
 const PORT = process.env.PORT || 7000 ;
-app.listen(PORT, ()=>{
-    console.log(`Airbnb Server Running on: ${PORT}`)
+mongoConnect(() => {
+    app.listen(PORT, ()=>{
+        console.log(`Airbnb Server Running on: ${PORT}`)
+    })
 })

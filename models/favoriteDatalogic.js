@@ -1,39 +1,34 @@
-import fs from  'fs';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const favouritesPath = path.join(__dirname,'data', 'favorite.json');
-
+import {promises as fs} from 'fs';
+import { getDb } from '../utils/database.js';
+import { ObjectId } from 'mongodb';
 
 export default class favoriteModel {
-
-
-    static addtoFavourite(id, callback) {
-        favoriteModel.getFavourite((favorites) => {
-            if(favorites.includes(id)) {
-                callback("Home is already added to favorite");
-            }
-            else{
-                favorites.push(id);
-                fs.writeFile(favouritesPath, JSON.stringify(favorites), callback)
-              
-            }
-        });
+    constructor(homeId) {
+        this.homeId = homeId;
     }
 
+    save() {
+        const db = getDb();
+        return db.collection('favourite').findOne({ homeId: this.homeId.toString() }).then(existing => {
+        if (existing) {
+            console.log('Home already exists in favourites');
+            return { alreadyExists: true };
+        } else {
+            return db.collection('favourite').insertOne(this);
+        }
+    });
+    }
+    
 
-    static getFavourite(callback) {
-        fs.readFile(favouritesPath, (err,data) => {
-            callback(!err ? JSON.parse(data) : [])
-        })
+    static getFavourite() {
+        const db = getDb();
+        return db.collection('favourite').find().toArray();
+          
     }
 
-    static deleteById(delHomeId, callback) {
-        favoriteModel.getFavourite(homeIDs => {
-            homeIDs = homeIDs.filter(homeId => delHomeId !== homeId);
-            fs.writeFile(favouritesPath, JSON.stringify(homeIDsf), callback)
-        })
+    static deleteById(delHomeId) {
+        const db = getDb();
+        return db.collection('favourite').deleteOne({homeId: delHomeId.toString()});
+        
     }
 }

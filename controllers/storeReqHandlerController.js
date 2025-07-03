@@ -80,16 +80,18 @@ const DEFAULT_HOMES = [
 
 
 export const getHome = (req, res) => {
-   HomeModel.fetchAll((registeredHomes) => {
-     res.render('store/home-index', {registeredHomes: registeredHomes, DEFAULT_HOMES: DEFAULT_HOMES})
-
-   })
+  HomeModel.fetchAll().then((registeredHomes) => {;
+    res.render('store/home-index', {registeredHomes: registeredHomes})
+  }).catch(err=> {
+    console.log("Error while fetching homes: ", err);
+    res.status(500).send("Internal Server Error");
+  })
 }
 
 export const getHomeDetails = (req, res) => {
   const homeid = req.params.homeId;
-  console.log("House card id:" ,homeid);
-  HomeModel.findById(homeid, home => {
+  
+  HomeModel.findById(homeid).then((home) => {
     if(!home) {
       res.redirect("/");
     }
@@ -97,16 +99,24 @@ export const getHomeDetails = (req, res) => {
         console.log("Home Details Found: ", home);
         res.render('store/home-details', {home: home})
     }
+  }).catch (err => {
+    console.log("Error while fetching home details: ", err);
+    res.status(500).send("Internal Server Error");
+  }) 
 
-  })
+  
 }
 
 
 
 export const geteditHome = (req, res) => {
-     HomeModel.fetchAll((registeredHomes) => {
-     res.render('store/edit-home', {registeredHomes: registeredHomes, DEFAULT_HOMES: DEFAULT_HOMES})
 
-   })}
+  HomeModel.fetchAll().then((data) => {
+    res.render('store/edit-home', { registeredHomes: data, DEFAULT_HOMES });
+  }).catch (err => {
+    console.error("Error while loading edit home page:", err);
+    res.status(500).send("Internal Server Error");
+  })
+};
 
 

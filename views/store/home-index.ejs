@@ -7,12 +7,10 @@
 
                 <ul class="display-house-card">
 
-                    <% if(registeredHomes.length <= 0){
-                        registeredHomes = DEFAULT_HOMES;
-                    } %>
+                  
 
                     <% registeredHomes.forEach((home) => { %>                 
-                        <a href="/home/<%= home.id %>" class="home-details-container" title="click for more details">
+                        <a href="/home/<%= home._id %>" class="home-details-container" title="click for more details">
                             <li class="liiii">
                                 <div class="house-card-container">
                                     <div class="house-card-img-container-987102">
@@ -22,10 +20,22 @@
                                         <span class="house-title"> <%=home.location %></span>
                                         <div>
                                             <span class="house-info">₹ <%= home.price%> </span>
-                                        <span class="house-info" >for <%= home.nights%> nights</span>
+                                        <span class="house-info" >for <%= home.night%> nights</span>
                                         <span class="house-info"><span class="house-card-star-icon">&#9733;</span> <%= home.rating%> </span>
                                         </div>
                                     </div>
+
+                                    <!--fav botton -->
+                                    <form method="post" action="/favorite/<%= home._id %>" class="heart-button-container">
+                                        <img class="heart-border" src="/assets/heart-border.png" alt="" srcset="">
+                                        <img class="heart-border-2" src="/assets/heart-border.png" alt="" srcset="">
+
+                               
+                                        <button type="submit" title="Add to favorite"><img class="heart-black" src="/assets/blacvk-heart.png" alt="" srcset=""></button>
+                                        <!-- <button><img class="heart-red" src="/assets/red-herst.png" alt="" srcset=""></button> -->
+                                    
+                                    
+                                    </form>
                                 </div>
                             </li>
                         </a>
