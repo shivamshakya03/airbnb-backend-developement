@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-up | Airbnb</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        
+    </style>
+</head>
+<body class="body-signup">
+    <div class="signup-container">
+        <div class="signup-title">Create your Airbnb account</div>
+
+        <% if (typeof errors !== 'undefined' && errors && errors.length > 0) { %>
+            <ul class="server-error-list">
+               <% errors.forEach (err => { %>
+                    <li class="server-error-item"><%= err %></li>
+                <% }); %>
+            </ul>
+        <% } %>
+
+
+
+
+        <form class="signup-form" action="/signupform" method="POST" autocomplete="on" onsubmit="return validateSignup(event)">
+            <input type="text" name="firstname" placeholder="First Name" required autofocus value="<%= typeof oldInput !== 'undefined' ? oldInput.firstname : '' %>">
+            <input type="text" name="lastname" placeholder="Last Name"  value="<%= typeof oldInput !== 'undefined' ? oldInput.lastname : '' %>">
+            <input type="email" name="email" placeholder="Email" required value="<%= typeof oldInput !== 'undefined' ? oldInput.email : '' %>">
+            <div class="input-group">
+                <input type="password" name="password" placeholder="Password" required id="password-field">
+                <span class="toggle-password" onclick="togglePassword('password-field', this)">👁️</span>
+            </div>
+            <div class="input-group">
+                <input type="password" name="confirmPassword" placeholder="Confirm Password" required id="Confirm-password-field">
+                <span class="toggle-password" onclick="togglePassword('Confirm-password-field', this)">👁️</span>
+            </div>
+           <div class="user-type-group">
+                <label for="guest">Guest</label>
+                <input id="guest" type="radio" name="userType" value="guest" <%= oldInput.userType === 'guest' ? 'checked' : '' %> required>
+                
+                <label for="host">Host</label>
+                <input id="host" type="radio" name="userType" value="host" <%= oldInput.userType === 'host' ? 'checked' : '' %>>
+            </div>
+
+            <div class="terms-group">
+                <input id="terms" type="checkbox" name="termsAccepted" required>
+                <label for="terms">I agree to the terms and conditions</label>
+            </div>
+            <div class="error-message" id="error-message"></div>
+            <input class="signup-btn" type="submit" value="Sign Up">
+        </form>
+        <div class="signup-link">Already have an account? <a href="/login">Login</a></div>
+    </div>
+    <script>
+        function togglePassword(fieldId, iconElem) {
+            const pwd = document.getElementById(fieldId);
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+                iconElem.textContent = '🙈';
+            } else {
+                pwd.type = 'password';
+                iconElem.textContent = '👁️';
+            }
+        }
+        function validateSignup(event) {
+            const pwd = document.getElementById('password-field');
+            const confirmPwd = document.getElementById('Confirm-password-field');
+            const errorMsg = document.getElementById('error-message');
+            if (pwd.value !== confirmPwd.value) {
+                errorMsg.textContent = 'Passwords do not match!';
+                errorMsg.style.display = 'block';
+                event.preventDefault();
+                return false;
+            }
+            errorMsg.style.display = 'none';
+            return true;
+        }
+    </script>
+</body>
+</html>

@@ -36,15 +36,36 @@
         </div>
         </section>
 
-        <div class="host-options">
-            <a href="#" class="header-be-host">Become a host</a>
-            <a href="#" class="menu-icon">🌐</a>
-            <div class="menu-icon">☰</div>
+        <% if (isLoggedIn) { %>
+            
+            
+           
+                    <div class="host-options">
+                        <a href="#" class="header-be-host">Become a host</a>
+                        <a href="#" class="menu-icon">🌐</a>
+                        <div class="menu-icon">☰</div>
+                    </div>
+                    <div class="header-favorite-icon-container">
+                        <a href="/edit-home" class="favorite-anchor-txt" title="Add to favorites">Edits</a>
+                        <img src="/assets/favourite.png" alt="favorite-icon" srcset="" class="favorite-icon">
+                    </div>
+
+        <% } %>
+        
+        
+        <% if (isLoggedIn) { %>
+
+        
+
+        <div class="logout login">
+            <a href="/logout" class="logout login-btn">Logout</a>
         </div>
-        <div class="header-favorite-icon-container">
-            <a href="/edit-home" class="favorite-anchor-txt" title="Add to favorites">      Edits</a>
-            <img src="/assets/favourite.png" alt="favorite-icon" srcset="" class="favorite-icon">
 
 
+        <% } else {%>
+        <div class="login">
+            <a href="/login" class="login-btn">Login</a>
         </div>
+        <% } %>
+
     </header>

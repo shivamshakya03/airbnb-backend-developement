@@ -5,16 +5,26 @@
 
 
     <section class="add-home-section">
-        <form action="/<%= editing ? 'edit-home' : 'post-home'%>" method="POST" class="add-home-form">
+        <form action="/<%= editing ? 'edit-home' : 'post-home'%>" method="POST" class="add-home-form" enctype="multipart/form-data">
 
             <input name="_id" type="hidden" value="<%= editing ? home._id : ''%>" placeholder="HOme Card id">
 
 
             <input name="imgUrl" type="text" value="<%= editing ? home.imgUrl : ''%>" placeholder="Enter image URL">
+
+
+            <input name="photos" type="file"  accept="image/jpg, image/png, image/jpeg" multiple>
+            
+            
             <input name="location" type="text" placeholder="Location" value="<%= editing ? home.location : ''%>">
             <input name="price" type="text" placeholder="Price" value="<%= editing ? home.price : ''%>">
             <input name="night" type="text" placeholder="How many night?" value="<%= editing ? home.night : ''%>">
             <input name="rating" type="text" placeholder="Rating" value="<%= editing ? home.rating : ''%>">
+
+            <label for="home-details-pdf" class="home-details-pdf-label">Home-Details (PDF)</label>
+            <input id="home-details-pdf" name="homeDetails" type="file"  accept="application/pdf">
+
+
             <button class="form-submit-button" type="submit"><%= (editing)  ? "Update" : "Register"%></button>
 
 
